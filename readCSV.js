@@ -16,8 +16,8 @@ function processCSV() {
     }
 
     // set depot manually
-    depot = new point('Depot', 'NA', -87.6618988, 41.8851024);
-    depot.setRelXY();
+    //depot = new point('Depot', 'NA', -87.6618988, 41.8851024);        // real depot
+    depot = new point('TestDepot', 'NA', -86, 41)                       // test map depot
 
     // set relative coords, now that max and min are established
     for (var i = 0; i < points.length; i++) {
@@ -31,9 +31,6 @@ function processCSV() {
         newRoutePair.calcTotalDistance();
         routePopulation.push(newRoutePair);
     }
-
-    //console.log('minX: ' + minX + ', maxX: ' + maxX);
-    //console.log('minY: ' + minY + ', maxY: ' + maxY);
 
     // debug
     // var relXArray = [];

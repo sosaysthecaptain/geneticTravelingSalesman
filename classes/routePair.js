@@ -27,8 +27,6 @@ class routePair {
                 this.routeBWithoutDepot.push(pointsShuffled[i]);
             }
         }
-
-        // calculate normalizedFitness
     }
 
     addDepot() {
@@ -77,6 +75,5 @@ class routePair {
         }
 
         this.totalDistance = this.totalDistanceA + this.totalDistanceB;
-        //console.log('totalDistance: ' + this.totalDistance);
     }
 }

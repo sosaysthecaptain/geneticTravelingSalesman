@@ -1,9 +1,14 @@
 var points = [];
 var depot = [];
-var minX = -88.2;
-var maxX = -87.6;
-var minY = 41.7;
-var maxY = 43.05;
+// var minX = -88.2;
+// var maxX = -87.6;
+// var minY = 41.7;
+// var maxY = 43.05;
+
+var minX = 0;       // tend to be around -87, so this is much higher
+var maxX = -100;    // tend to be around -87, so this is much lower
+var minY = 100;       // tend to be around 41, so this is much higher
+var maxY = 0;     // tend to be around 41, so this is much lower
 
 var popSize = 500;
 var routePopulation = [];
@@ -17,11 +22,9 @@ var generation = 0;
 var csv;
 
 function preload() {
-    csv = loadStrings("coords.csv");
-    //processCSV();
-    
-
-    //console.log(csv[2].splitCSV());
+    //csv = loadStrings("coords.csv");          // real file
+    csv = loadStrings("coordsTest.csv");
+    processCSV();
 }
 
 function setup() {
@@ -44,23 +47,29 @@ function draw() {
 
   background(0);
 
-  assessFitness();
-  renderRoutes();
-  nextGeneration();
+  //assessFitness();
+  //renderRoutes();
+  //nextGeneration();
+
+  // TESTING
+
+  // draw the map
+  drawPointArray(points);
+  drawDepot();
 
 
   // after 1000 generations, log results
-  if (generation == 1000) {
-    // log results
-    console.log('Route A: ');
-    for (var i = 0; i < bestRoutePairToDate.routeAWithDepot.length; i++) {
-      console.log('    ' + bestRoutePairToDate.routeAWithDepot[i].pointName);
-    }
-    console.log('Route B: ');
-    for (var i = 0; i < bestRoutePairToDate.routeBWithDepot.length; i++) {
-      console.log('    ' + bestRoutePairToDate.routeBWithDepot[i].pointName);
-    }
-  }
+  // if (generation == 1000) {
+  //   // log results
+  //   console.log('Route A: ');
+  //   for (var i = 0; i < bestRoutePairToDate.routeAWithDepot.length; i++) {
+  //     console.log('    ' + bestRoutePairToDate.routeAWithDepot[i].pointName);
+  //   }
+  //   console.log('Route B: ');
+  //   for (var i = 0; i < bestRoutePairToDate.routeBWithDepot.length; i++) {
+  //     console.log('    ' + bestRoutePairToDate.routeBWithDepot[i].pointName);
+  //   }
+  // }
 }
 
 
@@ -85,7 +94,7 @@ function calcDistance(points, order) {
 // *********
 function drawPointArray(pointArray) {
   stroke(255);
-  strokeWeight(1);
+  strokeWeight(3);
   noFill();
   beginShape();
 
