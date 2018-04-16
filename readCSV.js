@@ -32,6 +32,9 @@ function processCSV() {
         routePopulation.push(newRoutePair);
     }
 
+    // assign a random bestRoutePairToDate
+    bestRoutePairToDate = routePopulation[0];
+
     // debug
     // var relXArray = [];
     // var relYArray = [];

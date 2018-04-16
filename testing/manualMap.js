@@ -1,3 +1,5 @@
+// Testing things live here
+
 var upperLeft;
 var upperLeftInner;
 var lowerLeft;
@@ -8,6 +10,7 @@ var lowerRight;
 var lowerRightInner;
 
 var testRoutePair;
+var bestRoutePair;
 var correctRoutePair;
 var needsExchange;
 var needsFlip;
@@ -28,6 +31,17 @@ function setTestVariables() {
     //drawRoutePairLight(randomRoutePair);
     //logRoutePairs(randomRoutePair);
 
+    // best route pair
+    var bestA = [lowerLeftInner, lowerLeft, lowerRight, lowerRightInner];
+    var bestB = [upperRightInner, upperRight, upperLeft, upperLeftInner];
+    bestRoutePair = new routePair();
+    bestRoutePair.routeAWithoutDepot = bestA;
+    bestRoutePair.routeBWithoutDepot = bestB;
+    bestRoutePair.addDepot();                // must call this manually if manually messing with arrays
+    bestRoutePair.calcTotalDistance();
+    //drawRoutePairLight(bestRoutePair);
+    //logRoutePairs(bestRoutePair);
+    
     // correct route pair
     var correctA = [upperLeftInner, upperLeft, lowerLeft, lowerLeftInner];
     var correctB = [upperRightInner, upperRight, lowerRight, lowerRightInner];
@@ -70,6 +84,15 @@ function runTest() {
     correctRoutePair = mutateExchange(correctRoutePair);
     drawRoutePairLight(correctRoutePair);
     logRoutePairs(correctRoutePair);
+}
+
+function drawBest() {
+    /*
+    Assesses the current population & draws the best route pair to date.
+    */
+   assessFitness();
+   console.log('BEST OF PHENOTYPE: '+ floor(bestRoutePairToDate.totalDistance) + ', theoretical best 2730');
+   drawRoutePairLight(bestRoutePairToDate);
 }
 
 

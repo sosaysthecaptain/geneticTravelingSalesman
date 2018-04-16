@@ -12,10 +12,15 @@ var maxY = 0;     // tend to be around 41, so this is much lower
 
 var popSize = 500;
 var routePopulation = [];
-var mutationRate = 1;
+var flipMutationRate = 0.01;
+var exchangeMutationRate = 0.01;
 
 var bestDistance = Infinity;
 var bestRoutePairToDate;
+var bestRouteAToDate = [];
+var bestRouteBToDate = [];
+
+
 
 var generation = 0;
 
@@ -24,7 +29,6 @@ var csv;
 function preload() {
     //csv = loadStrings("coords.csv");          // real file
     csv = loadStrings("./testing/coordsTest.csv");
-    processCSV();
 }
 
 function setup() {
@@ -128,7 +132,7 @@ function drawRoutePairLight(routePairInstance) {
   // draw points in white, will be covered if visited
   drawPointArray(points);
 
-  strokeWeight(2);
+  strokeWeight(3);
   //noFill();
   beginShape();
 
@@ -156,49 +160,46 @@ function drawRoutePairLight(routePairInstance) {
   drawDepot();
 }
 
-function drawBestRoutePair() {
-  let routePairInstance = bestRoutePairToDate;
+// function drawBestRoutePair() {
+//   let routePairInstance = bestRoutePairToDate;
 
-  strokeWeight(4);
-  noFill();
-  beginShape();
+//   strokeWeight(3);
+//   noFill();
+//   beginShape();
 
-  // draw route 1
-  stroke(0, 255, 0);
-  beginShape();
-  for(var i = 0; i < routePairInstance.routeAWithDepot.length; i++) {
-    var pointInstance = routePairInstance.routeAWithDepot[i];
-    vertex(pointInstance.vector.x, pointInstance.vector.y);
-  }
-  endShape();
+//   // draw route 1
+//   stroke(0, 255, 0);
+//   beginShape();
+//   for(var i = 0; i < routePairInstance.routeAWithDepot.length; i++) {
+//     var pointInstance = routePairInstance.routeAWithDepot[i];
+//     vertex(pointInstance.vector.x, pointInstance.vector.y);
+//   }
+//   endShape();
 
-  // draw route 2
-  stroke(0, 0, 255);
-  beginShape();
-  for(var i = 0; i < routePairInstance.routeBWithDepot.length; i++) {
-    var pointInstance = routePairInstance.routeBWithDepot[i];
-    vertex(pointInstance.vector.x, pointInstance.vector.y);
-  }
-  endShape();
-}
+//   // draw route 2
+//   stroke(0, 0, 255);
+//   beginShape();
+//   for(var i = 0; i < routePairInstance.routeBWithDepot.length; i++) {
+//     var pointInstance = routePairInstance.routeBWithDepot[i];
+//     vertex(pointInstance.vector.x, pointInstance.vector.y);
+//   }
+//   endShape();
+// }
 
-function renderRoutes() {
-  /*
-  Main draw function, draws points, current best route pair, running best route pair, and the depot. Called once per generation.
-  */
+// function renderRoutes() {
+//   /*
+//   Main draw function, draws points, current best route pair, running best route pair, and the depot. Called once per generation.
+//   */
 
-  // draw points
-  drawPointArray(points);
+//   // draw current best route, found at the beginning of the sorted array
+//   drawRoutePairLight(routePopulation[0]);
 
-  // draw current best route, found at the beginning of the sorted array
-  drawRoutePairLight(routePopulation[0]);
+//   // draw running best route
+//   drawBestRoutePair();
 
-  // draw running best route
-  drawBestRoutePair();
-
-  // draw depot last
-  drawDepot()
-}
+//   // draw depot last
+//   drawDepot()
+// }
 
 function logRoutePairs(routePairInstance) {
   /*
@@ -243,5 +244,14 @@ function logRoutePairs(routePairInstance) {
     }
   }
   
+}
+
+function getBestRoutePairToDate() {
+  let returnPair = new routePair();
+  returnPair.routeAWithoutDepot = bestRouteAToDate;
+  returnPair.routeBWithoutDepot = bestRouteBToDate;
+  returnPair.addDepot()
+  returnPair.calcTotalDistance();
+  return returnPair;
 }
 
