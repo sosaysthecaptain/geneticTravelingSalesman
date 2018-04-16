@@ -7,6 +7,7 @@ var maxY = 43.05;
 
 var popSize = 500;
 var routePopulation = [];
+var mutationRate = 0.01;
 
 var bestDistance = Infinity;
 var bestRoutePairToDate;
@@ -45,57 +46,12 @@ function draw() {
 
   assessFitness();
   renderRoutes();
-  
-
-  // GA
-  //calculateFitness();
-  // normalizeFitness();
-  // nextGeneration();
-
-  // stroke(255);
-  // strokeWeight(4);
-  // noFill();
-  // beginShape();
-  // //var citiesWithDepot = addDepot(cities);
-  // for (var i = 0; i < bestEver.length; i++) {
-  //   var n = bestEver[i];
-  //   vertex(cities[n].x, cities[n].y);
-  //   ellipse(cities[n].x, cities[n].y, 16, 16);
-  // }
-  // endShape();
-
-  // translate(0, height / 2);
-  // stroke(255);
-  // strokeWeight(4);
-  // noFill();
-  // beginShape();
-  // for (var i = 0; i < currentBest.length; i++) {
-  //   var n = currentBest[i];
-  //   vertex(cities[n].x, cities[n].y);
-  //   ellipse(cities[n].x, cities[n].y, 16, 16);
-  // }
-  // endShape();
-
-  //console.log('gen ' + generation);
-
-
-
+  nextGeneration();
 }
 
-// function shuffle(a, num) {
-//   for (var i = 0; i < num; i++) {
-//     var indexA = floor(random(a.length));
-//     var indexB = floor(random(a.length));
-//     swap(a, indexA, indexB);
-//   }
-// }
 
 
-function swap(a, i, j) {
-  var temp = a[i];
-  a[i] = a[j];
-  a[j] = temp;
-}
+
 
 
 function calcDistance(points, order) {

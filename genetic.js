@@ -60,62 +60,140 @@ function nextGeneration() {
   parentBucketB = shuffle(parentBucketB);
 
   // create parentArrays
-  var parentArrayA = parentBucketA.slice(0, popSize);
-  var parentArrayB = parentBucketB.slice(0, popSize);
+  var parentArrayA = parentBucketA.slice(0, popSize - 50);
+  var parentArrayB = parentBucketB.slice(0, popSize - 50);
 
-  console.log(parentArrayA);
+  // add best to date a number of times, to give it a good shot at recombination
+  for (var i = 0; i < 45; i++) {
+    parentArrayA.push(bestRoutePairToDate);
+    parentArrayB.push(bestRoutePairToDate);
+  }
+
+  // SKIPPING CROSSOVER FOR NOW
+  routePopulation = parentArrayA;
+
+
+  // crossover. What a mess...
+  // perform crossover on each pair of parents, assign result to routePopulation
+  // routePopulation = [];
+  // for (var i = 0; i < parentArrayA.length; i++) {
+  //   var parentA = parentArrayA[i];
+  //   var parentB = parentArrayB[i];
+  //   // which route, a or b?
+  //   if (floor(random(1) > 0.5)) {
+  //     // routeA
+  //     let newRouteA = crossOver(parentA.routeAWithoutDepot, parentB.routeAWithoutDepot);
+  //     parentA.routeAWithoutDepot = newRouteA;
+  //     parentA.addDepot();
+  //     routePopulation.push(parentA);
+  //   } else {
+  //     // routeB
+  //     let newRouteB = crossOver(parentA.routeBWithoutDepot, parentB.routeBWithoutDepot);
+  //     parentA.routeBWithoutDepot = newRouteB;
+  //     parentA.addDepot();
+  //     routePopulation.push(parentA);
+  //   }
+
+    
+  //   let result = crossOver(parentArrayA[i], parentArrayB[i]);
+  //   routePopulation.push(result);
+  // }
 
   
-  
+
+    // mutate. Apply it to each route array in the population
+    for(var i = 0; i < routePopulation.length; i++) {
+      routePopulation[i].routeAWithoutDepot = mutate(routePopulation[i].routeAWithoutDepot);
+      routePopulation[i].routeBWithoutDepot = mutate(routePopulation[i].routeBWithoutDepot);
+    }
+
+  // include unmodified running best array, for good measure
+  routePopulation.push(bestRoutePairToDate);
 }
   
-//   function nextGeneration() {
-//     var newPopulation = [];
-//     for (var i = 0; i < population.length; i++) {
-//       var orderA = pickOne(population, fitness);
-//       var orderB = pickOne(population, fitness);
-//       var order = pickOne(population, fitness);
-//       var order = crossOver(orderA, orderB);
-//       mutate(order, 0.01);
-//       newPopulation[i] = order;
-//     }
-//     population = newPopulation;
+function crossOver(arrayA, arrayB) {
+  var start = floor(random(arrayA.length));
+  var end = floor(random(start + 1, arrayA.length));
+  var newArray = arrayA[start, end];
+  for (var i = 0; i < arrayB.length; i++) {
+    var item = arrayB[i];
+    if (!newArray.includes(item)) {
+      newArray.push(item);
+    }
+  }
+  return newArray;
+}
   
-//   }
   
-//   function pickOne(list, prob) {
-//     var index = 0;
-//     var r = random(1);
+function mutate(array) {
+  if (random(1) < mutationRate) {
+    var indexA = floor(random(array.length));
+    var indexB = (indexA + 1) % array.length;
+    var returnArray = swap(array, indexA, indexB);
+    return returnArray;
+  }
+
+}
+
+function swap(array, i, j) {
+  var temp = array[i];
+  array[i] = array[j];
+  array[j] = temp;
+  return array;
+}
+
+// function crossOver(parentA, parentB) {
+//   // determine whether crossover will occur within or between routes
+//   var newRoutePair = parentA;
   
-//     while (r > 0) {
-//       r = r - prob[index];
-//       index++;
-//     }
-//     index--;
-//     return list[index].slice();
-//   }
-  
-//   function crossOver(orderA, orderB) {
-//     var start = floor(random(orderA.length));
-//     var end = floor(random(start + 1, orderA.length));
-//     var neworder = orderA.slice(start, end);
-//     // var left = totalCities - neworder.length;
-//     for (var i = 0; i < orderB.length; i++) {
-//       var city = orderB[i];
-//       if (!neworder.includes(city)) {
-//         neworder.push(city);
+//   if (floor(random(1) > 0.5)) {
+//     // routeA
+//     var routeLength = parentA.routeAWithoutDepot.length;
+//     var start = floor(random(routeLength));
+//     var end = floor(random(start + 1, routeLength));
+//     var newOrder = parentA.routeAWithoutDepot.slice(start, end);
+
+//     while(newOrder.length < routeLength) {
+//       console.log('while loop. newOrder.length: ' + newOrder.length);       // REMOVE
+//       // while not long enough, step through parent until you find an item not in the array
+//       let item = parentB.routeAWithoutDepot.shift();
+//       if (!newOrder.includes(item)) {
+//         newOrder.push(item);
 //       }
+      
 //     }
-//     return neworder;
+//     newRoutePair.routeAWithoutDepot = newOrder;
+//   } else {
+//     // routeB
+//     // var routeLength = parentB.routeBWithoutDepot.length;
+//     // var start = floor(random(routeLength));
+//     // var end = floor(random(start + 1, routeLength));
+//     // var newOrder = parentA.routeBWithoutDepot.slice(start, end);
+
+//     // while(newOrder.length < routeLength) {
+//     //   // while not long enough, step through parent until you find an item not in the array
+//     //   for (var i = 0; i < routeLength; i++) {
+//     //     let item = parentB.routeBWithoutDepot[i];
+//     //     if (!newOrder.includes(item)) {
+//     //       newOrder.push(item);
+//     //     }
+//     //   }
+//     // }
+//     // newRoutePair.routeBWithoutDepot = newOrder;
 //   }
-  
-  
-//   function mutate(order, mutationRate) {
-//     for (var i = 0; i < totalCities; i++) {
-//       if (random(1) < mutationRate) {
-//         var indexA = floor(random(order.length));
-//         var indexB = (indexA + 1) % totalCities;
-//         swap(order, indexA, indexB);
-//       }
-//     }
-//   }
+//   //console.log(newRoutePair);
+//   //console.log('    final length: ' + newOrder.length);
+//   return newRoutePair;
+
+//   // var start = floor(random(parentArrayA.length));
+//   // var end = floor(random(start + 1, parentArrayB.length));
+//   // var neworder = parentArrayB.slice(start, end);
+//   // // var left = totalCities - neworder.length;
+//   // for (var i = 0; i < parentArrayB.length; i++) {
+//   //   var city = parentArrayB[i];
+//   //   if (!neworder.includes(city)) {
+//   //     neworder.push(city);
+//   //   }
+//   // }
+//   // return neworder;
+// }
