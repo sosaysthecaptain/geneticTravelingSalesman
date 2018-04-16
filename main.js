@@ -23,13 +23,18 @@ var csv;
 
 function preload() {
     //csv = loadStrings("coords.csv");          // real file
-    csv = loadStrings("coordsTest.csv");
+    csv = loadStrings("./testing/coordsTest.csv");
     processCSV();
 }
 
 function setup() {
   processCSV();
   createCanvas(600, 600);
+
+  // draw the map
+  background(0);
+  drawPointArray(points);
+  drawDepot();
 }
 
 function draw() {
@@ -45,17 +50,13 @@ function draw() {
       - introduces random mutations
   */
 
-  background(0);
+  //background(0);
 
   //assessFitness();
   //renderRoutes();
   //nextGeneration();
 
   // TESTING
-
-  // draw the map
-  drawPointArray(points);
-  drawDepot();
 
 
   // after 1000 generations, log results
@@ -118,9 +119,14 @@ function drawDepot() {
 }
 
 function drawRoutePairLight(routePairInstance) {
+  // reset background
+  background(0);
   
-  strokeWeight(1);
-  noFill();
+  // draw points in white, will be covered if visited
+  drawPointArray(points);
+
+  strokeWeight(2);
+  //noFill();
   beginShape();
 
   // draw route 1
@@ -129,6 +135,7 @@ function drawRoutePairLight(routePairInstance) {
   for(var i = 0; i < routePairInstance.routeAWithDepot.length; i++) {
     var pointInstance = routePairInstance.routeAWithDepot[i];
     vertex(pointInstance.vector.x, pointInstance.vector.y);
+    ellipse(pointInstance.vector.x, pointInstance.vector.y, 6, 6);
   }
   endShape();
 
@@ -138,8 +145,12 @@ function drawRoutePairLight(routePairInstance) {
   for(var i = 0; i < routePairInstance.routeBWithDepot.length; i++) {
     var pointInstance = routePairInstance.routeBWithDepot[i];
     vertex(pointInstance.vector.x, pointInstance.vector.y);
+    ellipse(pointInstance.vector.x, pointInstance.vector.y, 6, 6);
   }
   endShape();
+
+  // draw depot
+  drawDepot();
 }
 
 function drawBestRoutePair() {
@@ -184,5 +195,50 @@ function renderRoutes() {
 
   // draw depot last
   drawDepot()
+}
+
+function logRoutePairs(routePairInstance) {
+  /*
+  Logs routes and distances to console.
+  */
+  routePairInstance.addDepot();
+  routePairInstance.calcTotalDistance();
+
+  var routeA = routePairInstance.routeAWithDepot;
+  var routeB = routePairInstance.routeBWithDepot;
+  var routeANames = [];
+  var routeBNames = [];
+
+  for (var i = 0; i < routeA.length; i++) {
+    routeANames.push(routeA[i].pointName);
+    routeBNames.push(routeB[i].pointName);
+  }
+
+  console.log('ROUTE PAIR SUMMARY');
+  console.log('Overall distance: ' + floor(routePairInstance.totalDistance));
+  console.log('Route A (green), total distance: ' + floor(routePairInstance.totalDistanceA));
+  for (var i = 0; i < routeANames.length; i++) {
+    if (i < routeANames.length - 1) {
+      let pointAtIndex = routeA[i];
+      let nextPoint = routeA[i+1];
+      let distance = dist(pointAtIndex.relX, pointAtIndex.relY, nextPoint.relX, nextPoint.relY)
+      console.log('    ' + i + ': ' + routeANames[i] + ', distance: ' + floor(distance));
+    } else {
+      console.log('    ' + i + ': ' + routeANames[i]);
+    }
+    
+  }
+  console.log('Route B (blue), total distance: ' + floor(routePairInstance.totalDistanceB));
+  for (var i = 0; i < routeBNames.length; i++) {
+    if (i < routeBNames.length - 1) {
+      let pointAtIndex = routeB[i];
+      let nextPoint = routeB[i+1];
+      let distance = dist(pointAtIndex.relX, pointAtIndex.relY, nextPoint.relX, nextPoint.relY)
+      console.log('    ' + i + ': ' + routeBNames[i] + ', distance: ' + floor(distance));
+    } else {
+      console.log('    ' + i + ': ' + routeBNames[i]);
+    }
+  }
+  
 }
 

@@ -27,6 +27,9 @@ class routePair {
                 this.routeBWithoutDepot.push(pointsShuffled[i]);
             }
         }
+
+        // generate withDepot lists. Will have to be done again whenever routes are modified.
+        this.addDepot();
     }
 
     addDepot() {
