@@ -47,6 +47,20 @@ function draw() {
   assessFitness();
   renderRoutes();
   nextGeneration();
+
+
+  // after 1000 generations, log results
+  if (generation == 1000) {
+    // log results
+    console.log('Route A: ');
+    for (var i = 0; i < bestRoutePairToDate.routeAWithDepot.length; i++) {
+      console.log('    ' + bestRoutePairToDate.routeAWithDepot[i].pointName);
+    }
+    console.log('Route B: ');
+    for (var i = 0; i < bestRoutePairToDate.routeBWithDepot.length; i++) {
+      console.log('    ' + bestRoutePairToDate.routeBWithDepot[i].pointName);
+    }
+  }
 }
 
 

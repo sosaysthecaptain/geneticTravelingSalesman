@@ -13,7 +13,7 @@ function assessFitness() {
     if(routePopulation[i].totalDistance < bestDistance) {
       bestDistance = routePopulation[i].totalDistance;
       bestRoutePairToDate = routePopulation[i];
-      console.log('GEN ' + generation + ', NEW BEST DISTANCE: ' + floor(bestDistance));
+      console.log('NEW BEST DISTANCE: ' + floor(bestDistance));
     }
   }
 
@@ -103,8 +103,7 @@ function nextGeneration() {
 
     // mutate. Apply it to each route array in the population
     for(var i = 0; i < routePopulation.length; i++) {
-      routePopulation[i].routeAWithoutDepot = mutate(routePopulation[i].routeAWithoutDepot);
-      routePopulation[i].routeBWithoutDepot = mutate(routePopulation[i].routeBWithoutDepot);
+      routePopulation[i] = mutate(routePopulation[i]);
     }
 
   // include unmodified running best array, for good measure
@@ -123,24 +122,38 @@ function crossOver(arrayA, arrayB) {
   }
   return newArray;
 }
+
+function mutate(routePairInstance) {
   
-  
-function mutate(array) {
   if (random(1) < mutationRate) {
-    var indexA = floor(random(array.length));
-    var indexB = (indexA + 1) % array.length;
-    var returnArray = swap(array, indexA, indexB);
-    return returnArray;
+    // within routeA
+    var start = floor(random(routePairInstance.routeAWithoutDepot.length));
+    var end = floor(random(routePairInstance.routeAWithoutDepot.length));
+    var temp = routePairInstance.routeAWithoutDepot[start];
+    routePairInstance.routeAWithoutDepot[start] = routePairInstance.routeAWithoutDepot[end];
+    routePairInstance.routeAWithoutDepot[end] = temp;
+  }
+  if (random(1) < mutationRate) {
+    // within routeB
+    var start = floor(random(routePairInstance.routeBWithoutDepot.length));
+    var end = floor(random(routePairInstance.routeBWithoutDepot.length));
+    var temp = routePairInstance.routeBWithoutDepot[start];
+    routePairInstance.routeBWithoutDepot[start] = routePairInstance.routeBWithoutDepot[end];
+    routePairInstance.routeBWithoutDepot[end] = temp;
+  }
+  if (random(1) < mutationRate) {
+    // between routes
+    var start = floor(random(routePairInstance.routeAWithoutDepot.length));
+    var end = floor(random(routePairInstance.routeBWithoutDepot.length));
+    var temp = routePairInstance.routeAWithoutDepot[start];
+    routePairInstance.routeAWithoutDepot[start] = routePairInstance.routeBWithoutDepot[end];
+    routePairInstance.routeBWithoutDepot[end] = temp;
   }
 
+  return routePairInstance;
 }
-
-function swap(array, i, j) {
-  var temp = array[i];
-  array[i] = array[j];
-  array[j] = temp;
-  return array;
-}
+  
+  
 
 // function crossOver(parentA, parentB) {
 //   // determine whether crossover will occur within or between routes
