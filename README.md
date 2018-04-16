@@ -14,6 +14,8 @@ Upon completion of setup, the program enters a loop, contained in the draw() fun
 
 With enough generations, this process eventually produces a pair of reasonably optimal routes. 
 
+See comments throughout code as to the functionality of each function.
+
 ***********
 
 Assumptions:
