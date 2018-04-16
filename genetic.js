@@ -1,53 +1,3 @@
-function assessFitness() {
-  /*
-  Calculates distance, fitness, and normalizedFitness of current generation, sorts routePopulation, and sets best.
-  */
-
-  // calcTotalDistance, fitness on everybody. If record distance, set.
-  var fitnessSum = 0;
-  for (var i = 0; i < routePopulation.length; i++) {
-    routePopulation[i].calcTotalDistance()
-    routePopulation[i].fitness = floor((1 / routePopulation[i].totalDistance) * 100000);
-    fitnessSum += routePopulation[i].fitness
-
-    // if(routePopulation[i].totalDistance < bestDistance) {
-    //   bestDistance = routePopulation[i].totalDistance;
-    //   bestRoutePairToDate = routePopulation[i];
-    //   console.log('NEW BEST DISTANCE: ' + floor(bestDistance));
-    // }
-  }
-
-  // sort route population by fitness
-  routePopulation.sort(function(a,b) {
-    if (a.totalDistance > b.totalDistance) {
-        return 1;
-    } else {
-        return -1;
-    }
-  });
-
-  // if best of this batch is the best yet, set it
-  if (routePopulation[0].totalDistance < bestDistance) {
-    bestDistance = Number(routePopulation[0].totalDistance);
-    bestRoutePairToDate = routePopulation[0];
-
-    // hopefully we can get rid of these
-    bestRouteAToDate = routePopulation[0].routeAWithoutDepot.slice();
-    bestRouteBToDate = routePopulation[0].routeBWithoutDepot.slice();
-    
-    //console.log('    NEW BEST DISTANCE: ' + floor(bestDistance));
-  }
-
-  // calculate normalizedFitness for each
-  for (var i = 0; i < routePopulation.length; i++) {
-    routePopulation[i].normalizedFitness = routePopulation[i].fitness / fitnessSum;
-  }
-}
-
-
-// *******************************************
-// New functions below here
-
 function runGeneration() {
   /*
   Performs a complete generation. Steps:
@@ -58,9 +8,6 @@ function runGeneration() {
     5) Rendering
   */
   var oldBestDistance = bestDistance;
-  var oldBestPair = bestRoutePairToDate;
-  var oldBestRouteA = bestRouteAToDate;
-  var oldBestRouteB = bestRouteBToDate;
 
   // 1) Culling/new population creation
 
@@ -82,22 +29,47 @@ function runGeneration() {
   // Increment generation & report
   generation += 1;
   
-  // console.log('  oldBestDistance: ' + oldBestDistance)
-  // console.log('  oldBestPair: ' + oldBestPair.totalDistance)
-  // console.log('  bestDistance: ' + bestDistance)
-  // console.log('  bestRoutePairToDate: ' + bestRoutePairToDate.totalDistance)
-
-  // if (oldBestPair.totalDistance < bestRoutePairToDate) {
-  //   console.log('    ERROR IN bestRoutePairToDate');
-  // }
-
-  // solving a weird bug...
-  if (oldBestDistance < bestDistance) {
-    bestDistance = oldBestDistance;
-  }
-  
   console.log('Generation ' + generation + '. Running best: ' + floor(bestDistance));
+
 }
+
+function assessFitness() {
+  /*
+  Calculates distance, fitness, and normalizedFitness of current generation, sorts routePopulation, and sets best.
+  */
+
+  // calcTotalDistance, fitness on everybody. If record distance, set.
+  var fitnessSum = 0;
+  for (var i = 0; i < routePopulation.length; i++) {
+    routePopulation[i].calcTotalDistance()
+    routePopulation[i].fitness = floor((1 / routePopulation[i].totalDistance) * 100000);
+    fitnessSum += routePopulation[i].fitness
+  }
+
+  // sort route population by fitness
+  routePopulation.sort(function(a,b) {
+    if (a.totalDistance > b.totalDistance) {
+        return 1;
+    } else {
+        return -1;
+    }
+  });
+
+  // if best of this batch is the best yet, set it
+  if (routePopulation[0].totalDistance < bestDistance) {
+    console.log('NEW BEST FOUND: ' + floor(routePopulation[0].totalDistance));
+
+    bestDistance = Number(routePopulation[0].totalDistance);
+    bestRoutePairToDate = Object.assign({}, routePopulation[0]);
+  }
+
+  // calculate normalizedFitness for each
+  for (var i = 0; i < routePopulation.length; i++) {
+    routePopulation[i].normalizedFitness = routePopulation[i].fitness / fitnessSum;
+  }
+}
+
+
 
 function mutateRouteA(routePairInstance) {
   /*
@@ -139,4 +111,36 @@ function mutateExchange(routePairInstance) {
     routePairInstance.routeBWithoutDepot[end] = temp;               // from A, to B
   }
   return routePairInstance;
+}
+
+function createNewGeneration() {
+  /*
+  Generates an array of enriched fitness on the basis of the current routePopulation array. Does this by putting each routePair into a bucket a certain number of times, according to its fitness score, shuffling the bucket, and then withdrawing the requisite number.
+
+  Output can be used directly, or array can be shuffled and recombined with itself.
+  */
+
+  // TODO: implement me!
+}
+
+function recombine(parentArrayA, parentArrayB) {
+  /*
+  Recombines two parent arrays to produce a child array. Details to be figured out.
+  */
+}
+
+// **********************************************
+// minor helper/utility functions
+
+
+
+function getAverageFitness() {
+  /*
+  Returns average fitnessScore of the present generation.
+  */
+  var fitnessSum = 0;
+  for(var i = 0; i < routePopulation.length; i++) {
+    fitnessSum += routePopulation[i].fitness;
+  }
+  return (fitnessSum / routePopulation.length);
 }

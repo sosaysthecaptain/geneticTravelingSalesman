@@ -17,10 +17,6 @@ var exchangeMutationRate = 0.01;
 
 var bestDistance = Infinity;
 var bestRoutePairToDate;
-var bestRouteAToDate = [];
-var bestRouteBToDate = [];
-
-
 
 var generation = 0;
 
@@ -124,7 +120,7 @@ function drawDepot() {
 
 function drawRoutePairLight(routePairInstance) {
   // just in case
-  routePairInstance.addDepot();
+  //routePairInstance.addDepot();
 
   // reset background
   background(0);
@@ -205,8 +201,8 @@ function logRoutePairs(routePairInstance) {
   /*
   Logs routes and distances to console.
   */
-  routePairInstance.addDepot();
-  routePairInstance.calcTotalDistance();
+  //routePairInstance.addDepot();
+  //routePairInstance.calcTotalDistance();
 
   var routeA = routePairInstance.routeAWithDepot;
   var routeB = routePairInstance.routeBWithDepot;
@@ -246,12 +242,12 @@ function logRoutePairs(routePairInstance) {
   
 }
 
-function getBestRoutePairToDate() {
-  let returnPair = new routePair();
-  returnPair.routeAWithoutDepot = bestRouteAToDate;
-  returnPair.routeBWithoutDepot = bestRouteBToDate;
-  returnPair.addDepot()
-  returnPair.calcTotalDistance();
-  return returnPair;
-}
+// function getBestRoutePairToDate() {
+//   let returnPair = new routePair();
+//   returnPair.routeAWithoutDepot = bestRouteAToDate;
+//   returnPair.routeBWithoutDepot = bestRouteBToDate;
+//   returnPair.addDepot()
+//   returnPair.calcTotalDistance();
+//   return returnPair;
+// }
 
