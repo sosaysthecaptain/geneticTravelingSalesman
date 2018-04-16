@@ -62,6 +62,16 @@ function setTestVariables() {
     //logRoutePairs(needsFlip);
 }
 
+function runTest() {
+    /*
+    Put things in this to save typing
+    */
+
+    correctRoutePair = mutateExchange(correctRoutePair);
+    drawRoutePairLight(correctRoutePair);
+    logRoutePairs(correctRoutePair);
+}
+
 
 
 

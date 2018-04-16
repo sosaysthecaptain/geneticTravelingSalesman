@@ -12,7 +12,7 @@ var maxY = 0;     // tend to be around 41, so this is much lower
 
 var popSize = 500;
 var routePopulation = [];
-var mutationRate = 0.01;
+var mutationRate = 1;
 
 var bestDistance = Infinity;
 var bestRoutePairToDate;
@@ -119,6 +119,9 @@ function drawDepot() {
 }
 
 function drawRoutePairLight(routePairInstance) {
+  // just in case
+  routePairInstance.addDepot();
+
   // reset background
   background(0);
   

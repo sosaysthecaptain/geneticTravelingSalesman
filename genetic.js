@@ -210,3 +210,45 @@ function mutate(routePairInstance) {
 //   // }
 //   // return neworder;
 // }
+
+function mutateRouteA(routePairInstance) {
+  /*
+  Swaps order of two random points in route A, according to mutation rate
+  */
+  if (floor(random(1)) < mutationRate) {
+    var start = floor(random(routePairInstance.routeAWithoutDepot.length));
+    var end = floor(random(routePairInstance.routeAWithoutDepot.length));
+    var temp = routePairInstance.routeAWithoutDepot[start];
+    routePairInstance.routeAWithoutDepot[start] = routePairInstance.routeAWithoutDepot[end];
+    routePairInstance.routeAWithoutDepot[end] = temp;
+  }
+  return routePairInstance;
+}
+
+function mutateRouteB(routePairInstance) {
+  /*
+  Swaps order of two random points in route B, according to mutation rate
+  */
+  if (floor(random(1)) < mutationRate) {
+    var start = floor(random(routePairInstance.routeBWithoutDepot.length));
+    var end = floor(random(routePairInstance.routeBWithoutDepot.length));
+    var temp = routePairInstance.routeBWithoutDepot[start];
+    routePairInstance.routeBWithoutDepot[start] = routePairInstance.routeBWithoutDepot[end];
+    routePairInstance.routeBWithoutDepot[end] = temp;
+  }
+  return routePairInstance;
+}
+
+function mutateExchange(routePairInstance) {
+  /*
+  Swaps a randomly selected point between routeA and routeB
+  */
+  if (floor(random(1)) < mutationRate) {
+    var start = floor(random(routePairInstance.routeAWithoutDepot.length));
+    var end = floor(random(routePairInstance.routeBWithoutDepot.length));
+    var temp = routePairInstance.routeAWithoutDepot[start];         // from A, to B
+    routePairInstance.routeAWithoutDepot[start] = routePairInstance.routeBWithoutDepot[end];  // from B, to A
+    routePairInstance.routeBWithoutDepot[end] = temp;               // from A, to B
+  }
+  return routePairInstance;
+}
