@@ -1,3 +1,5 @@
+//var http = require('http');
+
 var points = [];
 var depot = [];
 // var minX = -88.2;
@@ -24,11 +26,17 @@ var pointIndex = 0;
 
 var csv;
 
-function preload() {
-    csv = loadStrings("coords.csv");                    // real file
-    //csv = loadStrings("./testing/coordsTest.csv");      // simple test
-    //csv = loadStrings('./testing/coordsTest2.csv');       // bigger test
-}
+// jQuery CSV loading method, loads specified CSV into global variable
+$(document).ready(function() {
+  $.ajax({
+      type: "GET",
+      url: "coords.csv",  // test files: ./testing/coordsTest.csv || ./testing/coordsTest2.csv
+      dataType: "text",
+      // success: function(data) {processData(data);}
+      success: function(data) {csv = data.split(/\r\n|\n/);}
+  });
+});
+
 
 function setup() {
   processCSV();
@@ -56,7 +64,7 @@ function draw() {
   */
 
   //background(0);
-  runGeneration();
+  //runGeneration();
 
   //assessFitness();
   //renderRoutes();
