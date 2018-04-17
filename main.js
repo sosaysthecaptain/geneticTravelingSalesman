@@ -12,19 +12,22 @@ var maxY = 0;     // tend to be around 41, so this is much lower
 
 var popSize = 500;
 var routePopulation = [];
-var flipMutationRate = 0.01;
-var exchangeMutationRate = 0.01;
+var flipMutationRate = 0.05;
+var exchangeMutationRate = 0.05;
 
 var bestDistance = Infinity;
 var bestRoutePairToDate;
 
 var generation = 0;
+var routePairIndex = 0;
+var pointIndex = 0;
 
 var csv;
 
 function preload() {
-    //csv = loadStrings("coords.csv");          // real file
-    csv = loadStrings("./testing/coordsTest.csv");
+    //csv = loadStrings("coords.csv");                    // real file
+    csv = loadStrings("./testing/coordsTest.csv");      // simple test
+    //csv = loadStrings('./testing/coordsTest2.csv');       // bigger test
 }
 
 function setup() {

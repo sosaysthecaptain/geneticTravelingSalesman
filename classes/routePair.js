@@ -16,6 +16,9 @@ class routePair {
         this.totalDistanceA = 0;
         this.totalDistanceB = 0;
 
+        this.index = routePairIndex;
+        routePairIndex += 1;
+
         // make a copy of the points array, shuffle it
         let pointsShuffled = shuffle(points);
 

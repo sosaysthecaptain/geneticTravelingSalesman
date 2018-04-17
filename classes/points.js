@@ -11,6 +11,9 @@ class point {
         this.relY = 0;
         this.vector;
 
+        this.index = pointIndex;
+        pointIndex += 1;
+
         //console.log('CREATING POINT FOR ' + pointName + ', pointX: ' + pointX + ', pointY: ' + pointY);
 
         if (this.pointX > maxX) {
