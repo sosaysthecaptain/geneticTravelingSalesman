@@ -35,8 +35,9 @@ function processCSV() {
     // assign a random bestRoutePairToDate
     bestRoutePairToDate = routePopulation[0];
 
-    // do initial assessFitness
+    // run initial generation
     assessFitness();
+    runGeneration();
 
     // debug
     // var relXArray = [];

@@ -27,25 +27,34 @@ var pointIndex = 0;
 var csv;
 
 // jQuery CSV loading method, loads specified CSV into global variable
-$(document).ready(function() {
-  $.ajax({
-      type: "GET",
-      url: "coords.csv",  // test files: ./testing/coordsTest.csv || ./testing/coordsTest2.csv
-      dataType: "text",
-      // success: function(data) {processData(data);}
-      success: function(data) {csv = data.split(/\r\n|\n/);}
-  });
-});
+// $(document).ready(function() {
+//   $.ajax({
+//       type: "GET",
+//       url: "coords.csv",  // test files: ./testing/coordsTest.csv || ./testing/coordsTest2.csv
+//       dataType: "text",
+//       // success: function(data) {processData(data);}
+//       success: function(data) {
+//         csv = data.split(/\r\n|\n/);
+//         //processCSV();
+//       }
+//   });
+// });
 
 
 function setup() {
-  processCSV();
-  createCanvas(600, 600);
+  // load CSV file, call processCSV() to do setup
+  $.ajax({
+    type: "GET",
+    url: "coords.csv",  // test files: ./testing/coordsTest.csv || ./testing/coordsTest2.csv
+    dataType: "text",
+    // success: function(data) {processData(data);}
+    success: function(data) {
+      csv = data.split(/\r\n|\n/);
+      processCSV();
+    }
+  });
 
-  // draw the map
-  background(0);
-  drawPointArray(points);
-  drawDepot();
+  createCanvas(600, 600);
 }
 
 function draw() {
