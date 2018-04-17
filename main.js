@@ -12,8 +12,8 @@ var maxY = 0;     // tend to be around 41, so this is much lower
 
 var popSize = 500;
 var routePopulation = [];
-var flipMutationRate = 0.05;
-var exchangeMutationRate = 0.05;
+var flipMutationRate = 0.5;
+var exchangeMutationRate = 0.9;
 
 var bestDistance = Infinity;
 var bestRoutePairToDate;
@@ -25,8 +25,8 @@ var pointIndex = 0;
 var csv;
 
 function preload() {
-    //csv = loadStrings("coords.csv");                    // real file
-    csv = loadStrings("./testing/coordsTest.csv");      // simple test
+    csv = loadStrings("coords.csv");                    // real file
+    //csv = loadStrings("./testing/coordsTest.csv");      // simple test
     //csv = loadStrings('./testing/coordsTest2.csv');       // bigger test
 }
 
@@ -51,9 +51,12 @@ function draw() {
       - culls the present generation to create the next one, more highly representing fitter phenotypes
       - performs crossover, adding to genetic diversity
       - introduces random mutations
+
+    All of this is accomplished with the runGeneration() function.
   */
 
   //background(0);
+  runGeneration();
 
   //assessFitness();
   //renderRoutes();
